@@ -6,8 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.arib.NotesAppApi.dto.NotesDTO;
-import com.arib.NotesAppApi.dto.NotesSaveDTO;
-import com.arib.NotesAppApi.dto.NotesUpdateDTO;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 
@@ -23,11 +21,19 @@ public interface NotesService {
 	
 	public List<Notes> getAllNotesOfUserId(int userID);
 
-	ResponseEntity<ResponseMessage> save3(NotesSaveDTO note);
+	ResponseEntity<ResponseMessage> save3(NotesDTO note);
 
-	ResponseEntity<ResponseMessage> update3(NotesUpdateDTO note);
+	ResponseEntity<ResponseMessage> update3(NotesDTO note);
 
 	public ResponseEntity<HttpStatus> deleteById(int id);
+
+	List<NotesDTO> getMainNotes(int userID);
+
+	List<NotesDTO> getDeletedNotes(int userID);
+
+	List<NotesDTO> getPinnedNotes(int userID);
+
+	List<NotesDTO> getArchivedNotes(int userID);
 	
 //-- single combined DTO File
 

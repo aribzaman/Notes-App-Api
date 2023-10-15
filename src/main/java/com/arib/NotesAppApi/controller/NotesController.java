@@ -1,9 +1,7 @@
 package com.arib.NotesAppApi.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-//import javax.validation.Valid;
 //import javax.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arib.NotesAppApi.dto.NotesDTO;
-import com.arib.NotesAppApi.dto.NotesSaveDTO;
-import com.arib.NotesAppApi.dto.NotesUpdateDTO;
+import com.arib.NotesAppApi.dto.NotesDTOMapper;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.dao.NotesDao;
 import com.arib.NotesAppApi.entities.Notes;
-import com.arib.NotesAppApi.entities.Test;
 import com.arib.NotesAppApi.services.NotesService;
 
 import jakarta.validation.Valid;
@@ -38,25 +34,25 @@ import lombok.AllArgsConstructor;
 @RequestMapping(value = "/notes")
 public class NotesController {
 	
+	private final NotesDTOMapper cdtom;
+	
 	private final NotesDao nd;
 
 	private final NotesService ns;
 
 	
 //----------------PLAYGROUND
-//	@GetMapping(path = "")
-//	public String test() {
-//
-////		System.out.println("controller me test me aaya"+ test);
-////		return nd.findAllByUser_idAndDeletedTrueOrderByIdDesc(1);
-//		
-////		List<Notes> ls = nd.findAllByUser_idOrderByDateUpdatedDesc(1);
-////		List<String> lstr = ls.stream().map((a)-> a.getDateUpdated().toString()).collect(Collectors.toList());
-//		return "working";
-//				
-//////		return ns.save3(note);
-////		return ResponseEntity.ok().body("yo");
-//	}
+
+    
+	@PostMapping(path = "/test", consumes = { "application/json" })
+	public void test(@Valid @RequestBody NotesDTO note) {
+//		note.asSave();
+//		System.out.println(cdtom.apply(note));
+		note.asUpdate();
+		System.out.println(cdtom.applyForUpdate(note));
+		System.out.println("sahi hai");
+	}
+
 //----------------
 
 	// get a note by id
@@ -91,13 +87,13 @@ public class NotesController {
 	
 	//Create a note
 	@PostMapping(path = "", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> addNotes(@Valid @RequestBody NotesSaveDTO note) {
+	public ResponseEntity<ResponseMessage> addNotes(@Valid @RequestBody NotesDTO note) {
 		return ns.save3(note);
 	}
 
 	// Update a note
 	@PutMapping(path = "", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> editNotes(@Valid @RequestBody NotesUpdateDTO note){
+	public ResponseEntity<ResponseMessage> editNotes(@Valid @RequestBody NotesDTO note){
 		return ns.update3(note);
 	}
 

@@ -2,58 +2,49 @@ package com.arib.NotesAppApi.dto;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Service;
+
+import com.arib.NotesAppApi.exception.InvalidJsonDataException;
+
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-//import javax.validation.constraints.Min;
-//import javax.validation.constraints.NotBlank;
-//import javax.validation.constraints.NotNull;
+//@Min(value = 1) Integer id;
+//	String title;
+//	String content;
+//	@Min(value = 1) Integer user;
+//	Boolean deleted;
+//	Boolean archived;
+//	Boolean pinned;
 
-////a dto for updating notes in db, where id is not sent by user since it is automatically assigned
-//public record NotesDTO (@Min(value = 0) @NotNull Integer id, @NotBlank String title, String content, @Min(value = 1) @NotNull Integer user, Date dateCreated, Date dateUpdated) {
-//	
-////	public NotesDTO(@NotNull String title, String content, Integer user, Date dateCreated, Date dateUpdated) {
-////	    this(-1, title, content, user, dateCreated, dateUpdated); 
-////	}
-//}
-//
-////a dto for saving notes in db, where only title, content and user is given by user
-//public record NotesDTO2 (@NotBlank String title, String content, @Min(value = 1) @NotNull Integer user) {}
+//@Data
+//@AllArgsConstructor
+//@NoArgsConstructor
+public record NotesDTO (
+	@Min(value = 1) Integer id,
+	String title,
+	String content,
+	@Min(value = 1) Integer user,
+	Date dateCreated,
+	Date dateUpdated,
+	Boolean deleted,
+	Boolean archived,
+	Boolean pinned )
+{
 
+	// Add a method to create an UpdateValidation instance
+	public void asUpdate() { if (id == null) {
+			throw new InvalidJsonDataException("Note ID must be provided for updating note");}}
+	
+	// Add a method to create an UpdateValidation instance
+	public void asSave() {
+		String msg = (title==null || title.strip()=="")?"and title " : "";
+		if (user == null) {
+			throw new InvalidJsonDataException("User ID " + msg + "must be provided for Saving note");}
+		}
 
-public record NotesDTO(
-        @Min(value = 0, groups = UpdateValidation.class) Integer id,
-        @NotBlank String title,
-        String content,
-        @Min(value = 1) @NotNull Integer user,
-        Date dateCreated,
-        Date dateUpdated,
-        boolean deleted,
-        boolean archived,
-        boolean pinned
-) {
-    // Define a validation group for update
-    public interface UpdateValidation {}
-    
-    // Define a constructor for creating a new note
-    public NotesDTO(@NotBlank String title, String content, @Min(value = 1) @NotNull Integer user, Date dateCreated, Date dateUpdated, boolean deleted,
-            boolean archived,
-            boolean pinned) {
-        this(null, title, content, user, dateCreated, dateUpdated, deleted, archived, pinned);
-    }
-
-//    // Define a method to check if it's an update DTO
-//    public boolean isUpdate() {
-//        return id != null;
-//    }
-
-    // Add a method to create an UpdateValidation instance
-    public NotesDTO asUpdate() {
-        if (id == null) {
-            throw new IllegalArgumentException("Note ID must be provided for updating note");
-        }
-        return this;
-    }
 }
-

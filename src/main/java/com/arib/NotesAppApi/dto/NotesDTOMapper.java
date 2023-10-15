@@ -6,18 +6,67 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.arib.NotesAppApi.dao.NotesDao;
 import com.arib.NotesAppApi.entities.Notes;
 import com.arib.NotesAppApi.entities.User;
+import com.arib.NotesAppApi.exception.WrongDataTypeException;
 import com.arib.NotesAppApi.services.UserService;
 
 @Service
-public class NotesDTOMapper implements Function<Notes, NotesDTO>{
-	
+public class NotesDTOMapper implements Function<NotesDTO, Notes> {
+
 	@Autowired
 	private UserService us;
 
+	@Autowired
+	NotesDao notesDao;
+
+	// save karne ke liye
 	@Override
-	public NotesDTO apply(Notes note) {
+	public Notes apply(NotesDTO t) {
+		User user = us.findById(t.user());
+		return new Notes(t.title(), t.content(), user, new Date());
+	}
+
+	// Another method to handle a different scenario
+	public Notes applyForUpdate(NotesDTO t) {
+		
+		Notes note = notesDao.findById(t.id()).get();
+		if (t.title() != null) {
+			if (t.title().isBlank()) {
+				throw new WrongDataTypeException("{title=must not be blank}");
+			}
+			if (!note.getTitle().equalsIgnoreCase(t.title())) {
+				note.setTitle(t.title().strip());
+				note.setDateUpdated(new Date());
+			}
+		}
+
+		if (t.content() != null && (note.getContent() == null
+				|| (note.getContent() != null && !note.getContent().equalsIgnoreCase(t.content())))) {
+			note.setContent(t.content().strip());
+			note.setDateUpdated(new Date());
+		}
+
+		if (t.pinned() != null && note.isPinned() != t.pinned()) {
+			note.setArchived(false);
+			note.setPinned(t.pinned());
+		} // (pin or unpin) & remove from archive
+		if (t.archived() != null && note.isArchived() != t.archived()) {
+			note.setPinned(false);
+//			note.setDeleted(false); //not the use case in app (from trash to archive)
+			note.setArchived(t.archived());
+		} // change arch and unpin
+		if (t.deleted() != null && note.isDeleted() != t.deleted()) {
+			note.setDeleted(t.deleted());
+			note.setPinned(false);
+			note.setArchived(false);
+		} // move to delete & unpin+unarch
+
+		return note;
+	}
+	
+	public NotesDTO applyReverse(Notes note) {
 		return new NotesDTO(
 				note.getId(),
 				note.getTitle(),
@@ -28,29 +77,7 @@ public class NotesDTOMapper implements Function<Notes, NotesDTO>{
 				note.isDeleted(),
 				note.isArchived(),
 				note.isPinned()
-				);
+				); 
 	}
-	
-//	@Override
-//	public NotesDTO apply(Notes note) {
-//		return new NotesDTO(
-//				note.getId(),
-//				note.getTitle(),
-//				note.getContent()
-//				);
-//	}
-	
-	// Method to perform reverse mapping (NotesDTO to Notes) for Saving a new note
-    public Notes applyReverse(NotesDTO notesDTO) {
-    	User user = us.findById(notesDTO.user());
-		return new Notes(notesDTO.title(), notesDTO.content(), user, new Date());
-    }
-    
- // Method to perform reverse mapping with an additional id parameter (USED AS AN UPDATING DTO)
-    public Notes applyReverse(NotesDTO notesDTO, int id) {
-        User user = us.findById(notesDTO.user());
-//        System.out.println("user in appylRev "+ user);
-        return new Notes(id, notesDTO.title(), notesDTO.content(), user, new Date(), notesDTO.deleted(), notesDTO.archived(), notesDTO.pinned());
-    }
 
 }
