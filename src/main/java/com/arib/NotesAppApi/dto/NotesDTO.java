@@ -13,17 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-//@Min(value = 1) Integer id;
-//	String title;
-//	String content;
-//	@Min(value = 1) Integer user;
-//	Boolean deleted;
-//	Boolean archived;
-//	Boolean pinned;
-
-//@Data
-//@AllArgsConstructor
-//@NoArgsConstructor
 public record NotesDTO (
 	@Min(value = 1) Integer id,
 	String title,
@@ -42,9 +31,8 @@ public record NotesDTO (
 	
 	// Add a method to create an UpdateValidation instance
 	public void asSave() {
-		String msg = (title==null || title.strip()=="")?"and title " : "";
-		if (user == null) {
-			throw new InvalidJsonDataException("User ID " + msg + "must be provided for Saving note");}
+		if (user == null || title == null || title.strip()=="") {
+			throw new InvalidJsonDataException(((user == null)? "User ID " : "")  + ((title==null || title.strip()=="") ? "Title " : "") + "must be provided for Saving a note");}
 		}
 
 }

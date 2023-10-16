@@ -33,17 +33,15 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RequestMapping(value = "/notes")
 public class NotesController {
-	
+
 	private final NotesDTOMapper cdtom;
-	
+
 	private final NotesDao nd;
 
 	private final NotesService ns;
 
-	
 //----------------PLAYGROUND
 
-    
 	@PostMapping(path = "/test", consumes = { "application/json" })
 	public void test(@Valid @RequestBody NotesDTO note) {
 //		note.asSave();
@@ -55,28 +53,16 @@ public class NotesController {
 
 //----------------
 
-	// get a note by id
-	@GetMapping("/{id}")
-	public NotesDTO getNote(@PathVariable @Min(value = 1) int id) {
-		return ns.findById(id);
-	}
-	
-	// Get All Notes
-	@GetMapping("")
-	public List<NotesDTO> getAllNotes() {
-		return ns.getAllNotes();
-	}
-	
 	// Get All details of all the Notes
 	@GetMapping("/all")
 	public List<Notes> getFullNotes() {
 		return ns.getFullNotes();
 	}
 
-	// get all notes of a userID
-	@GetMapping(path = "/userId/{userID}")
-	public List<Notes> getAllNotesOfUserId(@PathVariable @Min(value = 1) int userID) {
-		return ns.getAllNotesOfUserId(userID);
+	// Get All Notes
+	@GetMapping("")
+	public List<NotesDTO> getAllNotes() {
+		return ns.getAllNotes();
 	}
 
 	// Get Recent notes by userID
@@ -84,16 +70,49 @@ public class NotesController {
 	public List<NotesDTO> getRecentNotes(@PathVariable @Min(value = 1) int userID) {
 		return ns.getRecentNotes(userID);
 	}
-	
-	//Create a note
+
+	// Get Deleted notes by userID
+	@GetMapping(path = "/deleted/{userID}")
+	public List<NotesDTO> getDeletedNotes(@PathVariable @Min(value = 1) int userID) {
+		return ns.getDeletedNotes(userID);
+	}
+
+	// Get Archived notes by userID
+	@GetMapping(path = "/archived/{userID}")
+	public List<NotesDTO> getArchivedNotes(@PathVariable @Min(value = 1) int userID) {
+		return ns.getArchivedNotes(userID);
+	}
+
+	// Get Pinned notes by userID
+	@GetMapping(path = "/pinned/{userID}")
+	public List<NotesDTO> getPinnedNotes(@PathVariable @Min(value = 1) int userID) {
+		return ns.getPinnedNotes(userID);
+	}
+
+	// -------- Basic Crud -------
+
+	// get all notes of a userID
+	@GetMapping(path = "/userId/{userID}")
+	public List<Notes> getAllNotesOfUserId(@PathVariable @Min(value = 1) int userID) {
+		return ns.getAllNotesOfUserId(userID);
+	}
+
+	// get a note by id
+	@GetMapping("/{id}")
+	public NotesDTO getNote(@PathVariable @Min(value = 1) int id) {
+		return ns.findById(id);
+	}
+
+	// Create a note
 	@PostMapping(path = "", consumes = { "application/json" })
 	public ResponseEntity<ResponseMessage> addNotes(@Valid @RequestBody NotesDTO note) {
+		System.out.println("contr : "+note);
 		return ns.save3(note);
 	}
 
 	// Update a note
 	@PutMapping(path = "", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> editNotes(@Valid @RequestBody NotesDTO note){
+	public ResponseEntity<ResponseMessage> editNotes(@Valid @RequestBody NotesDTO note) {
 		return ns.update3(note);
 	}
 

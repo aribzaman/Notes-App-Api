@@ -1,5 +1,3 @@
-
-
 // //-------------DTO
 //
 //package com.arib.NotesAppApi.dto;
@@ -58,6 +56,12 @@
 //        }
 //    }
 //
+// --------- Service File
+//-- single combined DTO File
+
+//	public ResponseEntity<ResponseMessage> save2(NotesDTO note);
+//	ResponseEntity<ResponseMessage> update2(NotesDTO note);
+//
 //----------Additional
 ////	// Define a constructor for creating a new note
 ////    public Common(@NotBlank String title, String content, @Min(value = 1) @NotNull  Integer user, boolean deleted,
@@ -74,5 +78,8 @@
 ////			throw new IllegalArgumentException("User ID must be provided for Saving note");}}
 //
 //}
+
+
+
 
 

@@ -42,14 +42,13 @@ public class NotesServiceImplementation implements NotesService {
 		return allNotes.stream().map(nDTOm::applyReverse).collect(Collectors.toList());
 	}
 
-	
 	@Override
-	public List<NotesDTO> getMainNotes(int userID) {
+	public List<NotesDTO> getRecentNotes(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
 		return nd.findTop10ByUser_idOrderByIdDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
-	
+
 	@Override
 	public List<NotesDTO> getDeletedNotes(int userID) {
 		if (!userDao.existsById(userID))
@@ -71,22 +70,14 @@ public class NotesServiceImplementation implements NotesService {
 		return nd.findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
 
+	//----------------- CRUD
+	
 	@Override
 	public List<Notes> getAllNotesOfUserId(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
 		return nd.findAllByUser_idAndDeletedFalseAndPinnedFalseAndArchivedFalseOrderByDateUpdatedDesc(userID);
 	}
-	
-
-	@Override
-	public List<NotesDTO> getRecentNotes(int userID) {
-		if (!userDao.existsById(userID))
-			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findTop10ByUser_idOrderByIdDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
-	}
-
-	//----------------- CRUD
 	
 	@Override
 	public NotesDTO findById(int id) {
