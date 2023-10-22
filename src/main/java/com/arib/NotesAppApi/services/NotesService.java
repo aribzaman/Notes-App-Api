@@ -9,6 +9,9 @@ import com.arib.NotesAppApi.dto.NotesDTO;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+
 public interface NotesService {
 	
 	public List<Notes> getFullNotes();
@@ -29,12 +32,11 @@ public interface NotesService {
 
 	public List<Notes> getAllNotesOfUserId(int userID);
 
-	ResponseEntity<ResponseMessage> save3(NotesDTO note);
+	public ResponseEntity<ResponseMessage> addNotes(int userID, NotesDTO note);
 
-	ResponseEntity<ResponseMessage> update3(NotesDTO note);
+	public ResponseEntity<ResponseMessage> updateNote(int noteID, NotesDTO note);
 
 	public ResponseEntity<HttpStatus> deleteById(int id);
-
 
 //--------- Pagination
 	

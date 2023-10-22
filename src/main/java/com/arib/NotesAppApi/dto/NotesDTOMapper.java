@@ -22,16 +22,15 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 	NotesDao notesDao;
 
 	// save karne ke liye
-	@Override
-	public Notes apply(NotesDTO t) {
-		User user = us.findById(t.user());
+	public Notes save(int userID, NotesDTO t) {
+		User user = us.findById(userID);
 		return new Notes(t.title(), t.content(), user, new Date());
 	}
 
-	// Another method to handle a different scenario
-	public Notes applyForUpdate(NotesDTO t) {
-		
-		Notes note = notesDao.findById(t.id()).get();
+	public Notes update(int noteID, NotesDTO t) {
+
+		Notes note = notesDao.findById(noteID).get();
+
 		if (t.title() != null) {
 			if (t.title().isBlank()) {
 				throw new WrongDataTypeException("{title=must not be blank}");
@@ -43,7 +42,7 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 		}
 
 		if (t.content() != null && (note.getContent() == null
-				|| (note.getContent() != null && !note.getContent().equalsIgnoreCase(t.content())))) {
+				|| (note.getContent() != null && !note.getContent().equals(t.content())))) {
 			note.setContent(t.content().strip());
 			note.setDateUpdated(new Date());
 		}
@@ -65,19 +64,17 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 
 		return note;
 	}
-	
+
 	public NotesDTO applyReverse(Notes note) {
-		return new NotesDTO(
-				note.getId(),
-				note.getTitle(),
-				note.getContent(),
-				note.getUser().getId(),
-				note.getDateCreated(),
-				note.getDateUpdated(),
-				note.isDeleted(),
-				note.isArchived(),
-				note.isPinned()
-				); 
+		return new NotesDTO(note.getId(), note.getTitle(), note.getContent(), note.getUser().getId(), // just changing
+																										// user to
+																										// userId (int)
+				note.getDateCreated(), note.getDateUpdated(), note.isDeleted(), note.isArchived(), note.isPinned());
+	}
+
+	@Override
+	public Notes apply(NotesDTO t) {
+		return null;
 	}
 
 }

@@ -27,18 +27,18 @@ import lombok.AllArgsConstructor;
 @Service
 public class NotesServiceImplementation implements NotesService {
 
-	private final NotesDao nd;
+	private final NotesDao notesDao;
 	private final UserDao userDao;
 	private final NotesDTOMapper nDTOm;
 
 	@Override
 	public List<Notes> getFullNotes() {
-		return nd.findAll();
+		return notesDao.findAll();
 	}
 	
 	@Override
 	public List<NotesDTO> getAllNotes() {
-		List<Notes> allNotes = nd.findAll();
+		List<Notes> allNotes = notesDao.findAll();
 		return allNotes.stream().map(nDTOm::applyReverse).collect(Collectors.toList());
 	}
 
@@ -46,28 +46,28 @@ public class NotesServiceImplementation implements NotesService {
 	public List<NotesDTO> getRecentNotes(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findTop10ByUser_idOrderByIdDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
+		return notesDao.findTop10ByUser_idOrderByIdDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
 
 	@Override
 	public List<NotesDTO> getDeletedNotes(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findAllByUser_idAndDeletedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
+		return notesDao.findAllByUser_idAndDeletedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
 	
 	@Override
 	public List<NotesDTO> getPinnedNotes(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findAllByUser_idAndPinnedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
+		return notesDao.findAllByUser_idAndPinnedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
 	
 	@Override
 	public List<NotesDTO> getArchivedNotes(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
+		return notesDao.findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
 	}
 
 	//----------------- CRUD
@@ -76,44 +76,42 @@ public class NotesServiceImplementation implements NotesService {
 	public List<Notes> getAllNotesOfUserId(int userID) {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
-		return nd.findAllByUser_idAndDeletedFalseAndPinnedFalseAndArchivedFalseOrderByDateUpdatedDesc(userID);
+		return notesDao.findAllByUser_idAndDeletedFalseAndPinnedFalseAndArchivedFalseOrderByDateUpdatedDesc(userID);
 	}
 	
 	@Override
 	public NotesDTO findById(int id) {
-		if (!nd.existsById(id))
+		if (!notesDao.existsById(id))
 			throw new ResourceNotFoundException("No note present with this ID");
-		Notes nt = nd.findById(id).get();
+		Notes nt = notesDao.findById(id).get();
 		return nDTOm.applyReverse(nt);
 	}
 
 	@Override
 	public ResponseEntity<HttpStatus> deleteById(int id) {
-		if (!nd.existsById(id))
+		if (!notesDao.existsById(id))
 			throw new ResourceNotFoundException("No note present with this ID");
-		nd.deleteById(id);
+		notesDao.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
 
-	
-
 	@Override
-	public ResponseEntity<ResponseMessage> save3(NotesDTO note) {
+	public ResponseEntity<ResponseMessage> addNotes(int userID, NotesDTO note) {
 		note.asSave();
-		Notes newNote = nDTOm.apply(note);
-//		Notes newNote = nsDTOm.apply(note);
-		nd.save(newNote);
+		Notes newNote = nDTOm.save(userID, note);
+		notesDao.save(newNote);
 		return ResponseEntity.created(null).body(new ResponseMessage("Note Added successfully!", HttpStatus.CREATED));
+	
 	}
-
+	
 	@Override
-	public ResponseEntity<ResponseMessage> update3(NotesDTO note) {
-		if (!nd.existsById(note.id()))
+	public ResponseEntity<ResponseMessage> updateNote(int noteID, NotesDTO note) {
+		if (!notesDao.existsById(noteID))
 			throw new ResourceNotFoundException("No note present with this ID");
-		note.asUpdate();
-		Notes newNote = nDTOm.applyForUpdate(note);
-		nd.save(newNote);
+		Notes newNote = nDTOm.update(noteID, note);
+		notesDao.save(newNote);
 		return ResponseEntity.ok().body(new ResponseMessage("Note Updated successfully!", HttpStatus.OK));
 	}
+
 
 }

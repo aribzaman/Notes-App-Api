@@ -42,14 +42,14 @@ public class NotesController {
 
 //----------------PLAYGROUND
 
-	@PostMapping(path = "/test", consumes = { "application/json" })
-	public void test(@Valid @RequestBody NotesDTO note) {
-//		note.asSave();
-//		System.out.println(cdtom.apply(note));
-		note.asUpdate();
-		System.out.println(cdtom.applyForUpdate(note));
-		System.out.println("sahi hai");
-	}
+//	@PostMapping(path = "/test", consumes = { "application/json" })
+//	public void test(@Valid @RequestBody NotesDTO note) {
+////		note.asSave();
+////		System.out.println(cdtom.apply(note));
+//		note.asUpdate();
+//		System.out.println(cdtom.applyForUpdate(note));
+//		System.out.println("sahi hai");
+//	}
 
 //----------------
 
@@ -104,16 +104,17 @@ public class NotesController {
 	}
 
 	// Create a note
-	@PostMapping(path = "", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> addNotes(@Valid @RequestBody NotesDTO note) {
-		System.out.println("contr : "+note);
-		return ns.save3(note);
+	@PostMapping(path = "/{userID}", consumes = { "application/json" })
+	public ResponseEntity<ResponseMessage> addNotes(@PathVariable @Min(value = 1) int userID,
+			@Valid @RequestBody NotesDTO note) {
+		System.out.println("contr : " + note);
+		return ns.addNotes(userID, note);
 	}
 
 	// Update a note
-	@PutMapping(path = "", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> editNotes(@Valid @RequestBody NotesDTO note) {
-		return ns.update3(note);
+	@PutMapping(path = "/{noteID}", consumes = { "application/json" })
+	public ResponseEntity<ResponseMessage> updateNote(@PathVariable @Min(value = 1) int noteID, @Valid @RequestBody NotesDTO note) {
+		return ns.updateNote(noteID, note);
 	}
 
 	// Delete a Note

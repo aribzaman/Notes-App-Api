@@ -131,6 +131,13 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(InvalidJsonDataException.class)
+	public ResponseEntity<ErrorMessage> InvalidJsonDataExceptionHandler(Exception e, HttpServletRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(), e.getMessage(), request.getRequestURI());
+
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
+	}
+	
 //-------------------- Fallback Handler
 	
 	@ExceptionHandler(Exception.class)
