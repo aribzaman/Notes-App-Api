@@ -74,46 +74,4 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-//	@Override
-//	public User getUserByEmail(String email) {
-//		return userDao.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("No user present with this email"));
-//	}
-
-//	@Override
-//	public ResponseEntity<ResponseMessage> getLogin(String email, String password) {
-//
-//		Optional<User> user = userDao.findByEmail(email);
-//		if(user.isPresent() && user.get().getPassword().equals(password)) {
-//			return ResponseEntity.accepted().body(new ResponseMessage("success"));}
-//		throw new InsufficientAuthenticationException("error");
-//	}
-
-//	@Override
-//	public ResponseMessage getLogin(String email, String password) {
-//	    
-//		Optional<User> user = userDao.findByEmail(email);
-//		String msg="No User Exists with this Email ID";
-//	    if (user.isPresent()) {
-//	    	if(user.get().getPassword().equals(password)) {
-//	    		return new ResponseMessage("success");}
-//	    	msg="Wrong Password!";
-//	    }
-//	    throw new InsufficientAuthenticationException(msg);
-//	}
-	
-//	@Override
-//	public User save(User user) {		
-//		try {
-//			userDao.save(user);
-//		} catch (DataIntegrityViolationException e) {
-//			throw new ConstraintViolationException("User Already Exists");
-//		} catch (Exception e) {
-//			System.out.println(e + "\n" + e.getClass());
-//			throw new RuntimeErrorException(null);}
-//		return user;
-//
-//	}
-
-
-
 }

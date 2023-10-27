@@ -23,14 +23,4 @@ public interface NotesDao extends JpaRepository<Notes, Integer>{
 	
 	List<Notes> findTop10ByUser_idOrderByIdDesc(int userID);
 	
-//	//through native query
-//
-//	@Query(value = "SELECT * FROM notes n where n.user_id=:userID ORDER BY id DESC LIMIT 10", nativeQuery = true)
-//	List<Notes> getTenNotes(int userID); 
-//
-//	@Query(value = "SELECT * FROM notes e WHERE e.user_id =:userID ORDER BY id DESC", nativeQuery = true)
-//	List<Notes> getAllNotesOfUserId(int userID);
-	
-//	//Pagination
-//	Page<Notes> findById(int id, Pageable pageable);
 }

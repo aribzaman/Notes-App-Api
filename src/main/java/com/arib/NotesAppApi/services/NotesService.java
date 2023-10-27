@@ -38,10 +38,4 @@ public interface NotesService {
 
 	public ResponseEntity<HttpStatus> deleteById(int id);
 
-//--------- Pagination
-	
-//	public Page<Notes> getNotesByPages(int page, int size);
-	
-
-
 }

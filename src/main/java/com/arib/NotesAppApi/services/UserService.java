@@ -14,10 +14,6 @@ public interface UserService {
 	public List<User> getUsers();
 	
 	public User findById(int id);
-	
-//	public User getUserByEmail(String email);
-	
-//	public User save(User user);
 
 	public UserDTO auth(LoginWrapper user); //new
 

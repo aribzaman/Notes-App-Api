@@ -1,6 +1,7 @@
 package com.arib.NotesAppApi.entities;
 
 import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -61,19 +61,5 @@ public class UserController {
 	public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody User user) {
 		return us.save(user);
 	}
-	
-	//--------------- Redundant
-	
-//	// User Authentication new
-//	@PostMapping(path= "/auth", consumes = { "application/json" })
-//	public ResponseMessage auth(@RequestBody User user) {
-//		return us.auth(user);
-//	}
-
-//	// Add New User
-//	@PostMapping(path = "/", consumes = { "application/json" })
-//	public User addUser(@RequestBody User user) {
-//			return us.save(user);
-//	}
 
 }

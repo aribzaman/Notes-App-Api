@@ -41,31 +41,6 @@ import lombok.ToString;
 @Table(name = "Notes")
 @DynamicUpdate
 public class Notes {
-
-// -------- Old constrructors for combined dto
-	
-//	//old save dto const
-//	//for saving dto (applyReverse) dateCreated is automatic and dateUpdated is new()
-//	public Notes(@NotNull String title, String content, User user, Date dateUpdated) {
-//		super();
-//		this.title = title;
-//		this.content = content;
-//		this.user = user;
-//		this.dateUpdated =dateUpdated;
-//	}
-
-//	//for update dto
-//	public Notes(int id, @NotNull String title, String content, @NotNull User user, Date dateUpdated, boolean deleted, boolean archived, boolean pinned) {
-//		super();
-//		this.id = id;
-//		this.title = title;
-//		this.content = content;
-//		this.user = user;
-//		this.dateUpdated =dateUpdated;
-//		this.deleted = deleted;
-//		this.archived = archived;
-//		this.pinned = pinned;
-//	}
 	
 	//for saving dto (applyReverse) dateCreated is automatic and dateUpdated is new()
 		public Notes(@NotNull String title, String content, User user, Date dateUpdated) {
