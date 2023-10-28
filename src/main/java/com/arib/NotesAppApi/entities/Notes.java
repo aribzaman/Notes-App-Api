@@ -53,13 +53,14 @@ public class Notes {
 	
 	
 	//for update dto
-	public Notes(int id, @NotNull String title, String content, @NotNull User user, Date dateUpdated, boolean deleted, boolean archived, boolean pinned) {
+	public Notes(int id, @NotNull String title, String content, @NotNull User user, Date dateUpdated, Date dateDeleted, boolean deleted, boolean archived, boolean pinned) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.user = user;
 		this.dateUpdated =dateUpdated;
+		this.dateDeleted =dateDeleted;
 		this.deleted = deleted;
 		this.archived = archived;
 		this.pinned = pinned;
@@ -76,6 +77,9 @@ public class Notes {
 	
 	@Column(name = "content", length = 500)
 	private String content;
+	
+	@Column(name = "color")
+	private String color;
 	
 	@ManyToOne(targetEntity = User.class)
 	private User user;
@@ -96,5 +100,9 @@ public class Notes {
 	@Column(name = "date_updated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateUpdated;
+	
+	@Column(name = "date_deleted")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateDeleted;
 
 }

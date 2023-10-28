@@ -14,8 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public record NotesDTO(@Min(value = 1) Integer id, String title, String content, @Min(value = 1) Integer user,
-		Date dateCreated, Date dateUpdated, Boolean deleted, Boolean archived, Boolean pinned) {
+public record NotesDTO(@Min(value = 1) Integer id, String title, String content, String color, @Min(value = 1) Integer user,
+		Date dateCreated, Date dateUpdated, Date dateDeleted, Boolean deleted, Boolean archived, Boolean pinned) {
 
 	// Add a method to create an UpdateValidation instance
 	public void asSave() {

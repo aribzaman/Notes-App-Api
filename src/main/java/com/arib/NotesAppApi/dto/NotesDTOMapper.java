@@ -46,6 +46,12 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 			note.setContent(t.content().strip());
 			note.setDateUpdated(new Date());
 		}
+		
+		if (t.color() != null && (note.getColor() == null
+				|| (note.getColor() != null && !note.getColor().equals(t.color())))) {
+			if(t.color().equalsIgnoreCase("none")) {note.setColor(null);}
+			else{note.setColor(t.color());}
+		} // set new color
 
 		if (t.pinned() != null && note.isPinned() != t.pinned()) {
 			note.setArchived(false);
@@ -58,6 +64,8 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 		} // change arch and unpin
 		if (t.deleted() != null && note.isDeleted() != t.deleted()) {
 			note.setDeleted(t.deleted());
+			if(t.deleted()) {note.setDateDeleted(new Date());}
+			else {note.setDateDeleted(null);}
 			note.setPinned(false);
 			note.setArchived(false);
 		} // move to delete & unpin+unarch
@@ -66,10 +74,10 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 	}
 
 	public NotesDTO applyReverse(Notes note) {
-		return new NotesDTO(note.getId(), note.getTitle(), note.getContent(), note.getUser().getId(), // just changing
+		return new NotesDTO(note.getId(), note.getTitle(), note.getContent(), note.getColor(), note.getUser().getId(), // just changing
 																										// user to
 																										// userId (int)
-				note.getDateCreated(), note.getDateUpdated(), note.isDeleted(), note.isArchived(), note.isPinned());
+				note.getDateCreated(), note.getDateUpdated(), note.getDateCreated(), note.isDeleted(), note.isArchived(), note.isPinned());
 	}
 
 	@Override
