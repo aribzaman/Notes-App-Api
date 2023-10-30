@@ -1,10 +1,8 @@
 package com.arib.NotesAppApi.exception;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-//import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,7 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException e,
 			HttpServletRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND // .value() code ke liye
-				, HttpStatus.NOT_FOUND.value(), new Date(), e.getMessage(), request.getRequestURI());
+				, HttpStatus.NOT_FOUND.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
 	}
@@ -36,7 +34,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<ErrorMessage> AlreadyPresentException(ConstraintViolationException e,
 			HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
@@ -44,7 +42,7 @@ public class ControllerExceptionHandler {
 
 	@ExceptionHandler(InsufficientAuthenticationException.class)
 	public ResponseEntity<ErrorMessage> insufficientResExceptionHandler(Exception e, HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value(), new Date(), e.getMessage(), request.getRequestURI());
+		ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
 	}
@@ -60,7 +58,7 @@ public class ControllerExceptionHandler {
 			errors.put(fieldName, message);
 		});
 		
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				errors.toString(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
@@ -70,7 +68,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(jakarta.validation.ConstraintViolationException.class)
 	private ResponseEntity<ErrorMessage> handleRequestPathVariablesValidationException(Exception ex,
 			HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				ex.getMessage(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
@@ -81,7 +79,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(WrongDataTypeException.class)
 	public ResponseEntity<ErrorMessage> handleWrongDataTypeException(WrongDataTypeException e,
 			HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
@@ -91,7 +89,7 @@ public class ControllerExceptionHandler {
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ErrorMessage> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e,
 			HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				"Invalid data type for parameter: " + e.getName(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
@@ -109,7 +107,7 @@ public class ControllerExceptionHandler {
 		else if(e.getCause().getClass().getSimpleName().equals("JsonParseException")){
 			return handleJsonParseException((JsonParseException) e.getMostSpecificCause(), request);}
 		else {
-			ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+			ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 					e.getMessage(), request.getRequestURI());
 			return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 		}
@@ -118,7 +116,7 @@ public class ControllerExceptionHandler {
 	//InvalidFormatException example= user : "a" // it should be 1 / "1"
 	private ResponseEntity<ErrorMessage> handleInvalidFormatException(InvalidFormatException ex, HttpServletRequest request) {
 		System.out.println("hmm");
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				"Wrong data type provided in JSON Form with given value: " + ex.getValue(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
@@ -126,14 +124,14 @@ public class ControllerExceptionHandler {
 	//InvalidFormatException example= user : asdasd
 	private ResponseEntity<ErrorMessage> handleJsonParseException(JsonParseException ex,
 			HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(),
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				ex.getOriginalMessage(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(InvalidJsonDataException.class)
 	public ResponseEntity<ErrorMessage> InvalidJsonDataExceptionHandler(Exception e, HttpServletRequest request) {
-		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), new Date(), e.getMessage(), request.getRequestURI());
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
 	}
@@ -146,7 +144,7 @@ public class ControllerExceptionHandler {
 		e.printStackTrace();
 
 		ErrorMessage message = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR,
-				HttpStatus.INTERNAL_SERVER_ERROR.value(), new Date(), e.getMessage() + " (Fall Back Case) ",
+				HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(), e.getMessage() + " (Fall Back Case) ",
 				request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);

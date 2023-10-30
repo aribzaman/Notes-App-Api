@@ -1,6 +1,6 @@
 package com.arib.NotesAppApi.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 	// save karne ke liye
 	public Notes save(int userID, NotesDTO t) {
 		User user = us.findById(userID);
-		return new Notes(t.title(), t.content(), user, new Date());
+		return new Notes(t.title(), t.content(), user, LocalDateTime.now());
 	}
 
 	public Notes update(int noteID, NotesDTO t) {
@@ -37,14 +37,14 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 			}
 			if (!note.getTitle().equalsIgnoreCase(t.title())) {
 				note.setTitle(t.title().strip());
-				note.setDateUpdated(new Date());
+				note.setDateUpdated(LocalDateTime.now());
 			}
 		}
 
 		if (t.content() != null && (note.getContent() == null
 				|| (note.getContent() != null && !note.getContent().equals(t.content())))) {
 			note.setContent(t.content().strip());
-			note.setDateUpdated(new Date());
+			note.setDateUpdated(LocalDateTime.now());
 		}
 		
 		if (t.color() != null && (note.getColor() == null
@@ -64,7 +64,7 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 		} // change arch and unpin
 		if (t.deleted() != null && note.isDeleted() != t.deleted()) {
 			note.setDeleted(t.deleted());
-			if(t.deleted()) {note.setDateDeleted(new Date());}
+			if(t.deleted()) {note.setDateDeleted(LocalDateTime.now());}
 			else {note.setDateDeleted(null);}
 			note.setPinned(false);
 			note.setArchived(false);

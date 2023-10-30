@@ -2,7 +2,7 @@ package com.arib.NotesAppApi.entities;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 //import javax.persistence.Column;
 //import javax.persistence.Entity;
@@ -43,7 +43,7 @@ import lombok.ToString;
 public class Notes {
 	
 	//for saving dto (applyReverse) dateCreated is automatic and dateUpdated is new()
-		public Notes(@NotNull String title, String content, User user, Date dateUpdated) {
+		public Notes(@NotNull String title, String content, User user, LocalDateTime dateUpdated) {
 			super();
 			this.title = title;
 			this.content = content;
@@ -53,7 +53,7 @@ public class Notes {
 	
 	
 	//for update dto
-	public Notes(int id, @NotNull String title, String content, @NotNull User user, Date dateUpdated, Date dateDeleted, boolean deleted, boolean archived, boolean pinned) {
+	public Notes(int id, @NotNull String title, String content, @NotNull User user, LocalDateTime dateUpdated, LocalDateTime dateDeleted, boolean deleted, boolean archived, boolean pinned) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -72,10 +72,10 @@ public class Notes {
 	private int id;
 
 	@NotNull 
-	@Column(name = "title", nullable = false)
+	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 	
-	@Column(name = "content", length = 500)
+	@Column(name = "content", length = 2000)
 	private String content;
 	
 	@Column(name = "color")
@@ -95,14 +95,14 @@ public class Notes {
 	
 	@Column(name = "date_created", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateCreated = new Date();
+    private LocalDateTime dateCreated = LocalDateTime.now();
 	
 	@Column(name = "date_updated", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateUpdated;
+    private LocalDateTime dateUpdated;
 	
 	@Column(name = "date_deleted")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateDeleted;
+    private LocalDateTime dateDeleted;
 
 }

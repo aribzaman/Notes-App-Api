@@ -9,9 +9,6 @@ import com.arib.NotesAppApi.dto.NotesDTO;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-
 public interface NotesService {
 	
 	public List<Notes> getFullNotes();
@@ -25,7 +22,7 @@ public interface NotesService {
 	List<NotesDTO> getArchivedNotes(int userID);
 
 	List<NotesDTO> getPinnedNotes(int userID);
-
+	
 //----- Bsic CRUD
 	
 	public NotesDTO findById(int id);
@@ -37,5 +34,6 @@ public interface NotesService {
 	public ResponseEntity<ResponseMessage> updateNote(int noteID, NotesDTO note);
 
 	public ResponseEntity<HttpStatus> deleteById(int id);
+
 
 }

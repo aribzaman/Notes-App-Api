@@ -2,9 +2,6 @@ package com.arib.NotesAppApi.controller;
 
 import java.util.List;
 
-//import javax.validation.Valid;
-//import javax.validation.constraints.Min;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;

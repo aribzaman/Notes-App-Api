@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arib.NotesAppApi.dto.NotesDTO;
-import com.arib.NotesAppApi.dto.NotesDTOMapper;
 import com.arib.NotesAppApi.dto.ResponseMessage;
-import com.arib.NotesAppApi.dao.NotesDao;
 import com.arib.NotesAppApi.entities.Notes;
 import com.arib.NotesAppApi.services.NotesService;
 
@@ -34,24 +32,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping(value = "/notes")
 public class NotesController {
 
-	private final NotesDTOMapper cdtom;
-
-	private final NotesDao nd;
-
 	private final NotesService ns;
-
-//----------------PLAYGROUND
-
-//	@PostMapping(path = "/test", consumes = { "application/json" })
-//	public void test(@Valid @RequestBody NotesDTO note) {
-////		note.asSave();
-////		System.out.println(cdtom.apply(note));
-//		note.asUpdate();
-//		System.out.println(cdtom.applyForUpdate(note));
-//		System.out.println("sahi hai");
-//	}
-
-//----------------
 
 	// Get All details of all the Notes
 	@GetMapping("/all")
