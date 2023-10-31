@@ -1,5 +1,6 @@
 package com.arib.NotesAppApi.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,7 @@ public interface NotesDao extends JpaRepository<Notes, Integer>{
 	List<Notes> findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(int userID); //get all archived notes
 	
 	List<Notes> findTop10ByUser_idOrderByIdDesc(int userID);
+	
+	List<Notes> findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(LocalDateTime thirtyDaysAgo, LocalDateTime thirtyDaysAgo2);
 
 }

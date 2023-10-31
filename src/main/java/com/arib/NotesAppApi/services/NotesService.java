@@ -23,6 +23,8 @@ public interface NotesService {
 
 	List<NotesDTO> getPinnedNotes(int userID);
 	
+	public void deleteNotesFromTrash();
+	
 //----- Bsic CRUD
 	
 	public NotesDTO findById(int id);

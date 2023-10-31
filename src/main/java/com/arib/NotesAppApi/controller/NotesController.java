@@ -2,7 +2,6 @@ package com.arib.NotesAppApi.controller;
 
 import java.util.List;
 
-//import javax.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -94,7 +93,8 @@ public class NotesController {
 
 	// Update a note
 	@PutMapping(path = "/{noteID}", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> updateNote(@PathVariable @Min(value = 1) int noteID, @Valid @RequestBody NotesDTO note) {
+	public ResponseEntity<ResponseMessage> updateNote(@PathVariable @Min(value = 1) int noteID,
+			@Valid @RequestBody NotesDTO note) {
 		return ns.updateNote(noteID, note);
 	}
 

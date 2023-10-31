@@ -1,5 +1,6 @@
 package com.arib.NotesAppApi.services.implementation;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,13 @@ public class NotesServiceImplementation implements NotesService {
 		if (!userDao.existsById(userID))
 			throw new ResourceNotFoundException("No user present with this ID");
 		return notesDao.findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(userID).stream().map(nDTOm::applyReverse).collect(Collectors.toList());	//nd.getTenNotes(userID)
+	}
+	
+	@Override
+	public void deleteNotesFromTrash() {
+	    LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+		List<Notes> notesToDelete = notesDao.findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(thirtyDaysAgo, thirtyDaysAgo);
+		notesDao.deleteAll(notesToDelete);
 	}
 
 	//----------------- CRUD
