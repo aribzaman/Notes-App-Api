@@ -23,6 +23,10 @@ public interface NotesService {
 
 	List<NotesDTO> getPinnedNotes(int userID);
 	
+	List<Notes> searchInArchived(int userID, String query);
+
+	List<Notes> searchInDashboard(int userID, String query);
+	
 	public void deleteNotesFromTrash();
 	
 //----- Bsic CRUD
@@ -36,6 +40,5 @@ public interface NotesService {
 	public ResponseEntity<ResponseMessage> updateNote(int noteID, NotesDTO note);
 
 	public ResponseEntity<HttpStatus> deleteById(int id);
-
 
 }

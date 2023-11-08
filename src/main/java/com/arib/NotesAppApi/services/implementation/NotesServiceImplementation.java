@@ -72,6 +72,24 @@ public class NotesServiceImplementation implements NotesService {
 	}
 	
 	@Override
+    public List<Notes> searchInDashboard(int userID, String query) {
+		//[TODO] mapper space reject(trim)
+		if (!userDao.existsById(userID))
+			throw new ResourceNotFoundException("No user present with this ID");
+        return notesDao.searchInDashboard(userID, query, query);
+
+    }
+	
+	@Override
+    public List<Notes> searchInArchived(int userID, String query) {
+		//[TODO] mapper space reject(trim)
+		if (!userDao.existsById(userID))
+			throw new ResourceNotFoundException("No user present with this ID");
+        return notesDao.searchInArchived(userID, query, query);
+
+    }
+
+	@Override
 	public void deleteNotesFromTrash() {
 	    LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
 		List<Notes> notesToDelete = notesDao.findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(thirtyDaysAgo, thirtyDaysAgo);

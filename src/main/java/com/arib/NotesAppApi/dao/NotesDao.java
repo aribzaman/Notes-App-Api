@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.arib.NotesAppApi.entities.Notes;
 
@@ -20,7 +22,26 @@ public interface NotesDao extends JpaRepository<Notes, Integer>{
 	List<Notes> findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(int userID); //get all archived notes
 	
 	List<Notes> findTop10ByUser_idOrderByIdDesc(int userID);
-	
-	List<Notes> findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(LocalDateTime thirtyDaysAgo, LocalDateTime thirtyDaysAgo2);
+		
+	List<Notes> findByUser_idAndTitleContainingIgnoreCaseOrContentContainingIgnoreCase(int userId, String query, String query2);
 
+	List<Notes> findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(LocalDateTime thirtyDaysAgo, LocalDateTime thirtyDaysAgo2);
+	
+	 @Query(value = "SELECT * FROM notes WHERE user_id = :userId AND archived=0 AND deleted=0 AND (LOWER(title) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(content) LIKE LOWER(CONCAT('%', :query2, '%')))",
+     nativeQuery = true)
+List<Notes> searchInDashboard(
+      @Param("userId") int userId,
+      @Param("query") String query,
+      @Param("query2") String query2
+);
+	 @Query(value = "SELECT * FROM notes WHERE user_id = :userId AND archived=1 AND deleted=0 AND (LOWER(title) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(content) LIKE LOWER(CONCAT('%', :query2, '%')))",
+		     nativeQuery = true)
+		List<Notes> searchInArchived(
+		      @Param("userId") int userId,
+		      @Param("query") String query,
+		      @Param("query2") String query2
+		);
+	 
+	 
+	 
 }
