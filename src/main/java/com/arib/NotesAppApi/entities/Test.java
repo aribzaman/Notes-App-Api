@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Test {
+    int id;
 	String title;
     String content;
     Integer user;
