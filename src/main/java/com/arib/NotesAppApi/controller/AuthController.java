@@ -7,6 +7,9 @@ import com.arib.NotesAppApi.entities.User;
 import com.arib.NotesAppApi.security.JwtHelper;
 import com.arib.NotesAppApi.services.UserService;
 import jakarta.validation.Valid;
+
+import java.security.Principal;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -86,6 +89,14 @@ public class AuthController {
     public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody User user) {
         return userService.save(user);
     }
+    
+	//principal represents current user
+	@GetMapping("/current_user")
+	public String getLoggedInUser(Principal principal)
+	{
+		System.out.println("Current User is "+principal.getName());
+		return principal.getName();
+	}
 
 
 //--------------------

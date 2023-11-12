@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public ResponseEntity<ResponseMessage> save(User user){
 		try {
-//			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			userDao.save(user);
 		} 
 		catch (DataIntegrityViolationException e) {
