@@ -2,6 +2,7 @@ package com.arib.NotesAppApi.services;
 
 import java.util.List;
 
+import com.arib.NotesAppApi.dto.JWTResponseDTO;
 import org.springframework.http.ResponseEntity;
 
 import com.arib.NotesAppApi.dto.LoginWrapper;
@@ -18,6 +19,10 @@ public interface UserService {
 	public UserDTO auth(LoginWrapper user); //new
 
 	public ResponseEntity<ResponseMessage> save(User user);
+
+//	//-----------
+//
+	public ResponseEntity<JWTResponseDTO> login(LoginWrapper request);
 
 	
 }

@@ -2,6 +2,8 @@ package com.arib.NotesAppApi.controller;
 
 import java.util.List;
 
+import com.arib.NotesAppApi.dto.JWTResponseDTO;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,39 +26,41 @@ import jakarta.validation.constraints.Min;
 @Validated
 @RestController
 @CrossOrigin
+@AllArgsConstructor
 @RequestMapping(value = "/user")
 public class UserController {
 
-	private UserService us;
-
-	public UserController(UserService us) {
-		super();
-		this.us = us;
-	}
+	private final UserService userService;
 
 	// Get All Users
 	@GetMapping("")
 	public List<User> getUser() {
-		return us.getUsers();
+		return userService.getUsers();
 	}
 
 	//PUT validation for other than numbers - @Validated @Pattern(regexp = "\\d+", message = "Invalid user ID format. Please provide a valid integer ID.") 
 	// get a user by id 
 	@GetMapping("/{id}")
 	public User getUser(@PathVariable @Min(value = 1) int id) {
-		return us.findById(id);
+		return userService.findById(id);
 	}
 
 	// User Authentication new
 	@PostMapping(path = "/auth", consumes = { "application/json" })
 	public UserDTO auth(@Valid @RequestBody LoginWrapper user) {
-		return us.auth(user);
+		return userService.auth(user);
 	}
 
 	// Add New User
 	@PostMapping(path = "", consumes = { "application/json" })
 	public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody User user) {
-		return us.save(user);
+		return userService.save(user);
 	}
 
+	//--------------------
+
+	@PostMapping("/login")
+	public ResponseEntity<JWTResponseDTO> login(@RequestBody LoginWrapper request) {
+		return userService.login(request);
+	}
 }
