@@ -2,6 +2,7 @@ package com.arib.NotesAppApi.services.implementation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
@@ -31,12 +32,13 @@ public class UserServiceImpl implements UserService {
 	private final UserDao userDao;
 
 	@Override
-	public List<User> getUsers() {
+	public List<UserDTO> getUsers() {
 		List<User> ls = userDao.findAll();
 		if (ls.isEmpty()) {
 			throw new ResourceNotFoundException("No users found");
 		}
-		return ls;
+		return ls.stream().map(uDTOm::apply).collect(Collectors.toList());
+				
 	}
 
 	@Override

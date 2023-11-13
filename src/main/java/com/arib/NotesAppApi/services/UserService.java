@@ -11,11 +11,11 @@ import com.arib.NotesAppApi.entities.User;
 
 public interface UserService {
 	
-	public List<User> getUsers();
+	public List<UserDTO> getUsers();
 	
 	public User findById(int id);
 
-	public UserDTO auth(LoginWrapper user); //new
+	public UserDTO auth(LoginWrapper user);
 
 	public ResponseEntity<ResponseMessage> save(User user);
 

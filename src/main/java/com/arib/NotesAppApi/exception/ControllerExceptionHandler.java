@@ -37,7 +37,7 @@ public class ControllerExceptionHandler {
 		ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				e.getMessage(), request.getRequestURI());
 
-		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(InsufficientAuthenticationException.class)

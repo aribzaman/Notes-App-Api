@@ -12,51 +12,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arib.NotesAppApi.dao.UserDao;
 import com.arib.NotesAppApi.dto.LoginWrapper;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.dto.UserDTO;
+import com.arib.NotesAppApi.dto.UserDTOMapper;
 import com.arib.NotesAppApi.entities.User;
 import com.arib.NotesAppApi.services.UserService;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 
 @Validated
 @RestController
 @CrossOrigin
+@AllArgsConstructor
 @RequestMapping(value = "/user")
 public class UserController {
 
-	private UserService us;
-
-	public UserController(UserService us) {
-		super();
-		this.us = us;
-	}
+	private final UserService userService;
 
 	// Get All Users
 	@GetMapping("")
-	public List<User> getUser() {
-		return us.getUsers();
-	}
-
-	//PUT validation for other than numbers - @Validated @Pattern(regexp = "\\d+", message = "Invalid user ID format. Please provide a valid integer ID.") 
-	// get a user by id 
-	@GetMapping("/{id}")
-	public User getUser(@PathVariable @Min(value = 1) int id) {
-		return us.findById(id);
+	public List<UserDTO> getUser() {
+		return userService.getUsers();
 	}
 
 	// User Authentication new
-	@PostMapping(path = "/auth", consumes = { "application/json" })
+	@PostMapping(path = "/login", consumes = { "application/json" })
 	public UserDTO auth(@Valid @RequestBody LoginWrapper user) {
-		return us.auth(user);
+		return userService.auth(user);
 	}
 
 	// Add New User
 	@PostMapping(path = "", consumes = { "application/json" })
 	public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody User user) {
-		return us.save(user);
+		return userService.save(user);
 	}
 
 }
