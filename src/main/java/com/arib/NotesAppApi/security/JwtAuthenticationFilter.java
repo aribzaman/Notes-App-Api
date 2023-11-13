@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-//har baar chalega, har request par
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -35,24 +34,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-//        try {
-//            Thread.sleep(500);
-//        } catch (InterruptedException e) {
-//            throw new RuntimeException(e);
-//        }
-
-		// requestHeader in format---> //Bearer 2352345235sdfrsfgsdfsdf
 		String requestHeader = request.getHeader("Authorization");
-//		logger.info(" Header :  {}", requestHeader);
 
 		String token = null;
-		String username = null; //Username present within token
-
-		//For checking correct syntax of Header
-		//header has something and it is starting with Bearer
+		String username = null; 
+		
 		if (requestHeader != null && requestHeader.startsWith("Bearer")) {
 
-			// "Bearer " ko clip kardege
+			System.out.println("RH aaya hai: "+ requestHeader);
 			token = requestHeader.substring(7);
 
 			try {
@@ -74,20 +63,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		else {
 //			logger.info(requestHeader, token, username);
-			System.out.println(requestHeader);
-			System.out.println(token);
-			System.out.println(username);
 			logger.info("Invalid Header Value !! ");
 		}
 
-		//Going for Authentication of user+token if above went successful
-		//username bhara ho aur SecurityContextHolder already bhara nahi hona chahiye
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			// fetch user detail from username
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-			//helper token aur user ko validate karega aur boolean return karega
 			Boolean validateToken = this.jwtHelper.validateToken(token, userDetails);
 
 			if (validateToken) {
@@ -96,8 +78,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-				// security context me se context nikaala hai then set the authentication
-				//SPRING SECURITY ki ghnati bajjj jaayegi ki authenticate hogaya
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			} else {

@@ -2,6 +2,8 @@ package com.arib.NotesAppApi.services;
 
 import com.arib.NotesAppApi.dao.UserDao;
 import com.arib.NotesAppApi.entities.User;
+import com.arib.NotesAppApi.exception.BadCredentialsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +19,7 @@ public class CustomUserDetailService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		User user = repository.findByEmail(username).orElseThrow(() -> new RuntimeException("User Not Found"));
+		User user = repository.findByEmail(username).orElseThrow(() -> new RuntimeException("No User Exists with this Email ID"));
 		return user;
 	}
 }

@@ -7,23 +7,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arib.NotesAppApi.dao.NotesDao;
+import com.arib.NotesAppApi.dao.UserDao;
 import com.arib.NotesAppApi.entities.Notes;
 import com.arib.NotesAppApi.entities.User;
+import com.arib.NotesAppApi.exception.BadCredentialsException;
 import com.arib.NotesAppApi.exception.WrongDataTypeException;
-import com.arib.NotesAppApi.services.UserService;
 
 @Service
 public class NotesDTOMapper implements Function<NotesDTO, Notes> {
-
+	
 	@Autowired
-	private UserService us;
+	private UserDao userDao;
 
 	@Autowired
 	NotesDao notesDao;
 
 	// save karne ke liye
 	public Notes save(int userID, NotesDTO t) {
-		User user = us.findById(userID);
+		User user = userDao.findById(userID).orElseThrow(() -> new BadCredentialsException("No user present with this ID"));
 		return new Notes(t.title(), t.content(), user, LocalDateTime.now());
 	}
 

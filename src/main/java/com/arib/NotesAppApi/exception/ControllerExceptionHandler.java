@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+//import org.springframework.security.authentication.BadCredentialsException;
+//import com.arib.NotesAppApi.exception.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,7 +40,7 @@ public class ControllerExceptionHandler {
 		ErrorMessage message = new ErrorMessage(HttpStatus.CONFLICT, HttpStatus.CONFLICT.value(), LocalDateTime.now(),
 				e.getMessage(), request.getRequestURI());
 
-		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.CONFLICT);
 	}
 
 	@ExceptionHandler(InsufficientAuthenticationException.class)
@@ -73,7 +75,7 @@ public class ControllerExceptionHandler {
 				ex.getMessage(), request.getRequestURI());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
-
+	
 //------------------
 
 	//Manually throw catch
@@ -137,10 +139,14 @@ public class ControllerExceptionHandler {
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
 	}
 
-	//---------- BadCredentialsException
-	@ExceptionHandler(BadCredentialsException.class)
-	public String exceptionHandler() {
-		return "Credentials Invalid !!";
+//	---------- BadCredentialsException
+	@ExceptionHandler({BadCredentialsException.class, InternalAuthenticationServiceException.class})
+	public ResponseEntity<ErrorMessage> exceptionHandler(Exception e, HttpServletRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
+//		return e.getMessage();
+//				"Credentials Invalid !!";
 	}
 	
 //-------------------- Fallback Handler

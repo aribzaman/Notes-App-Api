@@ -7,12 +7,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//Spring security uses "UserDetailsService" to fetch user based on username,
-
 @Configuration
 class Config {
 
-    //Password encoder for keeping encoded paassword
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
