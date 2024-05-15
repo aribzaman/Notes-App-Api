@@ -2,6 +2,7 @@ package com.arib.NotesAppApi.services.implementation;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.management.RuntimeErrorException;
 
@@ -32,7 +33,6 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserDao userDao;
-
 	private final PasswordEncoder passwordEncoder;
 	private final UserDetailsService userDetailsService;
 	private final AuthenticationManager manager;

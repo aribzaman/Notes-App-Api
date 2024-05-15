@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.arib.NotesAppApi.dao.UserDao;
 import com.arib.NotesAppApi.dto.LoginWrapper;
 import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.User;
@@ -32,7 +33,7 @@ public class UserController {
 	public ResponseEntity<JWTResponseDTO> login(@RequestBody LoginWrapper request) {
 		return userService.login(request);
 	}
-	
+  
 	// Add New User
 	@PostMapping(path = "", consumes = { "application/json" })
 	public ResponseEntity<ResponseMessage> addUser(@Valid @RequestBody User user) {

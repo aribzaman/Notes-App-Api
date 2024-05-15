@@ -3,7 +3,6 @@ package com.arib.NotesAppApi.dto;
 import java.time.LocalDateTime;
 import java.util.function.Function;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.arib.NotesAppApi.dao.NotesDao;
@@ -13,9 +12,12 @@ import com.arib.NotesAppApi.entities.User;
 import com.arib.NotesAppApi.exception.BadCredentialsException;
 import com.arib.NotesAppApi.exception.WrongDataTypeException;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class NotesDTOMapper implements Function<NotesDTO, Notes> {
-	
+
 	@Autowired
 	private UserDao userDao;
 
