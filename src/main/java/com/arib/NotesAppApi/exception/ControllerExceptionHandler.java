@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
-//import org.springframework.security.authentication.BadCredentialsException;
-//import com.arib.NotesAppApi.exception.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -136,7 +134,14 @@ public class ControllerExceptionHandler {
 	public ResponseEntity<ErrorMessage> InvalidJsonDataExceptionHandler(Exception e, HttpServletRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 
-		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
+	}
+
+	// missing query parameters
+	@ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+	public ResponseEntity<ErrorMessage> MissingServletRequestParameterException(Exception e, HttpServletRequest request) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.BAD_REQUEST);
 	}
 
 //	---------- BadCredentialsException

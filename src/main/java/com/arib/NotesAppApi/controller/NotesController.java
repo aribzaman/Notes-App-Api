@@ -34,22 +34,10 @@ public class NotesController {
 
 	private final NotesService notesService;
 
-	// Get All details of all the Notes
-	@GetMapping("/all")
-	public List<Notes> getFullNotes() {
-		return notesService.getFullNotes();
-	}
-
 	// Get All Notes
 	@GetMapping("")
 	public List<NotesDTO> getAllNotes() {
 		return notesService.getAllNotes();
-	}
-
-	// Get Recent notes by userID
-	@GetMapping(path = "/recent/{userID}")
-	public List<NotesDTO> getRecentNotes(@PathVariable @Min(value = 1) int userID) {
-		return notesService.getRecentNotes(userID);
 	}
 
 	// Get Deleted notes by userID
@@ -71,7 +59,7 @@ public class NotesController {
 	}
 	
 	@GetMapping("/search/dashboard/{userID}")
-    public List<Notes> searchInDashboard(@PathVariable @Min(value = 1) int userID, @RequestParam String query) {
+    public List<NotesDTO> searchInDashboard(@PathVariable @Min(value = 1) int userID, @RequestParam String query) {
         return notesService.searchInDashboard(userID, query);
     }
 	
@@ -96,10 +84,9 @@ public class NotesController {
 	}
 
 	// Create a note
-	@PostMapping(path = "/{userID}", consumes = { "application/json" })
+	@PostMapping(path = "/{userID}")
 	public ResponseEntity<ResponseMessage> addNotes(@PathVariable @Min(value = 1) int userID,
 			@Valid @RequestBody NotesDTO note) {
-		System.out.println("contr : " + note);
 		return notesService.addNotes(userID, note);
 	}
 

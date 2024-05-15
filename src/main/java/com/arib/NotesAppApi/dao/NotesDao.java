@@ -20,10 +20,6 @@ public interface NotesDao extends JpaRepository<Notes, Integer>{
 	List<Notes> findAllByUser_idAndPinnedTrueOrderByDateUpdatedDesc(int userID); //get all pinned notes
 	
 	List<Notes> findAllByUser_idAndArchivedTrueOrderByDateUpdatedDesc(int userID); //get all archived notes
-	
-	List<Notes> findTop10ByUser_idOrderByIdDesc(int userID);
-		
-	List<Notes> findByUser_idAndTitleContainingIgnoreCaseOrContentContainingIgnoreCase(int userId, String query, String query2);
 
 	List<Notes> findAllByDeletedTrueAndDateDeletedBeforeOrDateDeleted(LocalDateTime thirtyDaysAgo, LocalDateTime thirtyDaysAgo2);
 	

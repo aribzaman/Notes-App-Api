@@ -4,17 +4,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
 
-//import javax.persistence.Column;
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.GenerationType;
-//import javax.persistence.Id;
-//import javax.persistence.ManyToOne;
-//import javax.persistence.Table;
-//import javax.persistence.Temporal;
-//import javax.persistence.TemporalType;
-//import javax.validation.constraints.NotNull;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -71,7 +60,8 @@ public class Notes {
 	@Column(name = "id", nullable = false, unique = true)
 	private int id;
 
-	@NotNull 
+	@NotNull
+	@ManyToOne
 	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 	
