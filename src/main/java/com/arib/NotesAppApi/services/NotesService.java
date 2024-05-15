@@ -10,12 +10,8 @@ import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 
 public interface NotesService {
-	
-	public List<Notes> getFullNotes();
-	
-	public List<NotesDTO> getAllNotes();
 
-	List<NotesDTO> getRecentNotes(int userID);
+	public List<NotesDTO> getAllNotes();
 
 	List<NotesDTO> getDeletedNotes(int userID);
 	
@@ -25,7 +21,7 @@ public interface NotesService {
 	
 	List<Notes> searchInArchived(int userID, String query);
 
-	List<Notes> searchInDashboard(int userID, String query);
+	List<NotesDTO> searchInDashboard(int userID, String query);
 	
 	public void deleteNotesFromTrash();
 	
