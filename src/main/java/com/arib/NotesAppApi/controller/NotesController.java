@@ -2,6 +2,8 @@ package com.arib.NotesAppApi.controller;
 
 import java.util.List;
 
+import com.arib.NotesAppApi.dto.NotesResponse;
+import com.arib.NotesAppApi.dto.NotesSearchResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.arib.NotesAppApi.dto.NotesDTO;
-import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 import com.arib.NotesAppApi.services.NotesService;
 
@@ -34,73 +35,52 @@ public class NotesController {
 
 	private final NotesService notesService;
 
-	// Get All Notes
-	@GetMapping("")
+	@GetMapping
 	public List<NotesDTO> getAllNotes() {
 		return notesService.getAllNotes();
+	} //Dev
+
+	@GetMapping("/section/{userId}")
+	public NotesResponse getNotes(@PathVariable @Min(value = 1) int userId, @RequestParam String section) {
+		return notesService.getSectionNotes(userId, section);
 	}
 
-	// Get Deleted notes by userID
-	@GetMapping(path = "/deleted/{userID}")
-	public List<NotesDTO> getDeletedNotes(@PathVariable @Min(value = 1) int userID) {
-		return notesService.getDeletedNotes(userID);
+	@GetMapping("/search/{userId}")
+	public NotesSearchResponse searchNote2(@PathVariable @Min(value = 1) int userId, @RequestParam String query) {
+		return notesService.searchNote(userId, query);
 	}
-
-	// Get Archived notes by userID
-	@GetMapping(path = "/archived/{userID}")
-	public List<NotesDTO> getArchivedNotes(@PathVariable @Min(value = 1) int userID) {
-		return notesService.getArchivedNotes(userID);
-	}
-
-	// Get Pinned notes by userID
-	@GetMapping(path = "/pinned/{userID}")
-	public List<NotesDTO> getPinnedNotes(@PathVariable @Min(value = 1) int userID) {
-		return notesService.getPinnedNotes(userID);
-	}
-	
-	@GetMapping("/search/dashboard/{userID}")
-    public List<NotesDTO> searchInDashboard(@PathVariable @Min(value = 1) int userID, @RequestParam String query) {
-        return notesService.searchInDashboard(userID, query);
-    }
-	
-	@GetMapping("/search/archive/{userID}")
-    public List<Notes> searchInArchived(@PathVariable @Min(value = 1) int userID, @RequestParam String query) {
-        return notesService.searchInArchived(userID, query);
-    }
-
 
 	// -------- Basic Crud -------
 
-	// get all notes of a userID
-	@GetMapping(path = "/userId/{userID}")
-	public List<Notes> getAllNotesOfUserId(@PathVariable @Min(value = 1) int userID) {
-		return notesService.getAllNotesOfUserId(userID);
+	@GetMapping("/userId/{userId}")
+	public List<Notes> getAllNotesOfUserId(@PathVariable @Min(value = 1) int userId) {
+		return notesService.getAllNotesOfUserId(userId);
 	}
 
 	// get a note by id
-	@GetMapping("/{id}")
-	public NotesDTO getNote(@PathVariable @Min(value = 1) int id) {
-		return notesService.findById(id);
+	@GetMapping("/{noteId}")
+	public NotesDTO getNote(@PathVariable @Min(value = 1) int noteId) {
+		return notesService.findById(noteId);
 	}
 
 	// Create a note
-	@PostMapping(path = "/{userID}")
-	public ResponseEntity<ResponseMessage> addNotes(@PathVariable @Min(value = 1) int userID,
+	@PostMapping("/{userId}")
+	public ResponseEntity<NotesResponse> addNotes(@PathVariable @Min(value = 1) int userId,
 			@Valid @RequestBody NotesDTO note) {
-		return notesService.addNotes(userID, note);
+		return notesService.addNotes(userId, note);
 	}
 
 	// Update a note
-	@PutMapping(path = "/{noteID}", consumes = { "application/json" })
-	public ResponseEntity<ResponseMessage> updateNote(@PathVariable @Min(value = 1) int noteID,
+	@PutMapping("/{noteId}")
+	public ResponseEntity<NotesResponse> updateNote(@PathVariable @Min(value = 1) int noteId,
 			@Valid @RequestBody NotesDTO note) {
-		return notesService.updateNote(noteID, note);
+		return notesService.updateNote(noteId, note);
 	}
 
 	// Delete a Note
-	@DeleteMapping("/{id}")
-	public ResponseEntity<HttpStatus> deleteNotes(@PathVariable @Min(value = 1) int id) {
-		return notesService.deleteById(id);
+	@DeleteMapping("/{noteId}")
+	public ResponseEntity<HttpStatus> deleteNotes(@PathVariable @Min(value = 1) int noteId) {
+		return notesService.deleteById(noteId);
 	}
 
 }

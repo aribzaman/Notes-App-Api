@@ -2,39 +2,33 @@ package com.arib.NotesAppApi.services;
 
 import java.util.List;
 
+import com.arib.NotesAppApi.dto.NotesResponse;
+import com.arib.NotesAppApi.dto.NotesSearchResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.arib.NotesAppApi.dto.NotesDTO;
-import com.arib.NotesAppApi.dto.ResponseMessage;
 import com.arib.NotesAppApi.entities.Notes;
 
 public interface NotesService {
 
-	public List<NotesDTO> getAllNotes();
-
-	List<NotesDTO> getDeletedNotes(int userID);
+	List<NotesDTO> getAllNotes();
 	
-	List<NotesDTO> getArchivedNotes(int userID);
-
-	List<NotesDTO> getPinnedNotes(int userID);
+	void deleteNotesFromTrash();
 	
-	List<Notes> searchInArchived(int userID, String query);
-
-	List<NotesDTO> searchInDashboard(int userID, String query);
+//----- Basic CRUD
 	
-	public void deleteNotesFromTrash();
-	
-//----- Bsic CRUD
-	
-	public NotesDTO findById(int id);
+	NotesDTO findById(int id);
 
-	public List<Notes> getAllNotesOfUserId(int userID);
+	List<Notes> getAllNotesOfUserId(int userID);
 
-	public ResponseEntity<ResponseMessage> addNotes(int userID, NotesDTO note);
+	ResponseEntity<NotesResponse> addNotes(int userID, NotesDTO note);
 
-	public ResponseEntity<ResponseMessage> updateNote(int noteID, NotesDTO note);
+	ResponseEntity<NotesResponse> updateNote(int noteID, NotesDTO note);
 
-	public ResponseEntity<HttpStatus> deleteById(int id);
+	ResponseEntity<HttpStatus> deleteById(int id);
 
+	NotesResponse getSectionNotes(int userID, String section);
+
+	NotesSearchResponse searchNote(int userID, String query);
 }

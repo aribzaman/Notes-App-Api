@@ -77,8 +77,8 @@ public class ControllerExceptionHandler {
 //------------------
 
 	//Manually throw catch
-	@ExceptionHandler(WrongDataTypeException.class)
-	public ResponseEntity<ErrorMessage> handleWrongDataTypeException(WrongDataTypeException e,
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorMessage> handleWrongDataTypeException(IllegalArgumentException e,
 			HttpServletRequest request) {
 		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.value(), LocalDateTime.now(),
 				e.getMessage(), request.getRequestURI());
@@ -150,8 +150,6 @@ public class ControllerExceptionHandler {
 		ErrorMessage message = new ErrorMessage(HttpStatus.UNAUTHORIZED, HttpStatus.UNAUTHORIZED.value(), LocalDateTime.now(), e.getMessage(), request.getRequestURI());
 
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.UNAUTHORIZED);
-//		return e.getMessage();
-//				"Credentials Invalid !!";
 	}
 	
 //-------------------- Fallback Handler

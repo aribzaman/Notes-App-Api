@@ -18,11 +18,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 
-	@Autowired
 	private UserDao userDao;
-
-	@Autowired
-	NotesDao notesDao;
+	private NotesDao notesDao;
 
 	// save karne ke liye
 	public Notes save(int userID, NotesDTO t) {

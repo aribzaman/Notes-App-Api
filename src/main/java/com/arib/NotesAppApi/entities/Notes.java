@@ -31,16 +31,15 @@ import lombok.ToString;
 @DynamicUpdate
 public class Notes {
 	
-	//for saving dto (applyReverse) dateCreated is automatic and dateUpdated is new()
-		public Notes(@NotNull String title, String content, User user, LocalDateTime dateUpdated) {
-			super();
-			this.title = title;
-			this.content = content;
-			this.user = user;
-			this.dateUpdated =dateUpdated;
-		}
-	
-	
+	//for saving dto (applyReverse)
+	public Notes(@NotNull String title, String content, User user, LocalDateTime dateUpdated) {
+		super();
+		this.title = title;
+		this.content = content;
+		this.user = user;
+		this.dateUpdated =dateUpdated;
+	}
+
 	//for update dto
 	public Notes(int id, @NotNull String title, String content, @NotNull User user, LocalDateTime dateUpdated, LocalDateTime dateDeleted, boolean deleted, boolean archived, boolean pinned) {
 		super();
@@ -61,7 +60,6 @@ public class Notes {
 	private int id;
 
 	@NotNull
-	@ManyToOne
 	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 	
@@ -95,4 +93,11 @@ public class Notes {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateDeleted;
 
+	public boolean isNotArchived(){
+		return !archived;
+	}
+
+	public boolean isNotPinned() {
+		return !pinned;
+	}
 }

@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Min;
 public record NotesDTO(@Min(value = 1) Integer id, String title, String content, String color, @Min(value = 1) Integer user,
 		LocalDateTime dateCreated, LocalDateTime dateUpdated, LocalDateTime dateDeleted, Boolean deleted, Boolean archived, Boolean pinned) {
 
-	// Add a method to create an UpdateValidation instance
 	public void asSave() {
 		if (title == null || title.strip() == "") {
 			throw new InvalidJsonDataException("Title must be provided for Saving a note");

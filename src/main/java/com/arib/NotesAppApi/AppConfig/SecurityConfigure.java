@@ -26,6 +26,7 @@ public class SecurityConfigure {
     private final JwtAuthenticationFilter filter;
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
+	private final String[] whitelist = {"/user/**","/error"};
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,10 +35,10 @@ public class SecurityConfigure {
         		.cors(Customizer.withDefaults())
         		.authorizeHttpRequests(auth->auth
         				.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        				.anyRequest()
-						.permitAll())
+						.requestMatchers(whitelist).permitAll()
+        				.anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
