@@ -46,7 +46,7 @@ public class NotesController {
 	}
 
 	@GetMapping("/search/{userId}")
-	public NotesSearchResponse searchNote2(@PathVariable @Min(value = 1) int userId, @RequestParam String query) {
+	public NotesSearchResponse searchNote(@PathVariable @Min(value = 1) int userId, @RequestParam String query) {
 		return notesService.searchNote(userId, query);
 	}
 

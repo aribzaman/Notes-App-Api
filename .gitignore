@@ -33,5 +33,3 @@ build/
 .vscode/
 
 src/main/java/com/arib/NotesAppApi/entities/Test.java
-
-README.md
