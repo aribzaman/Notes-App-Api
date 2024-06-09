@@ -26,13 +26,11 @@ public class UserController {
 
 	private final UserService userService;
 
-	// User Authentication
 	@PostMapping("/login")
 	public ResponseEntity<JWTResponseDTO> login(@RequestBody LoginWrapper request) {
 		return userService.login(request);
 	}
   
-	// Add New User
 	@PostMapping
 	public ResponseEntity<NotesResponse> addUser(@Valid @RequestBody User user) {
 		return userService.save(user);

@@ -12,7 +12,7 @@ public class DeleteNotesFromBinJob {
 
 	private NotesService notesService;
 
-	@Scheduled(cron = "0 0 0 * * *") // Run every midnight 000
+	@Scheduled(cron = "0 0 0 * * *") // Runs every midnight 000
 	public void performDatabaseAction2() {
 		notesService.deleteNotesFromTrash();
 	}

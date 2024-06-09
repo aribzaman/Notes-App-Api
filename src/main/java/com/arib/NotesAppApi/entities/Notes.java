@@ -1,5 +1,6 @@
 package com.arib.NotesAppApi.entities;
 
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
@@ -15,18 +16,11 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-@ToString
 @Entity
+@Data
+@Builder
 @Table(name = "Notes")
 @DynamicUpdate
 public class Notes {

@@ -21,7 +21,6 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 	private UserDao userDao;
 	private NotesDao notesDao;
 
-	// save karne ke liye
 	public Notes save(int userID, NotesDTO t) {
 		User user = userDao.findById(userID).orElseThrow(() -> new BadCredentialsException("No user present with this ID"));
 		return new Notes(t.title(), t.content(), user, LocalDateTime.now());
@@ -46,30 +45,34 @@ public class NotesDTOMapper implements Function<NotesDTO, Notes> {
 			note.setContent(t.content().strip());
 			note.setDateUpdated(LocalDateTime.now());
 		}
-		
+
+		// set new color
 		if (t.color() != null && (note.getColor() == null
 				|| (note.getColor() != null && !note.getColor().equals(t.color())))) {
 			if(t.color().equalsIgnoreCase("none")) {note.setColor(null);}
 			else{note.setColor(t.color());}
-		} // set new color
+		}
 
+		// (pin or unpin) & remove from archive
 		if (t.pinned() != null && note.isPinned() != t.pinned()) {
 			note.setArchived(false);
 			note.setPinned(t.pinned());
-		} // (pin or unpin) & remove from archive
+		}
+
+		// change arch and unpin
 		if (t.archived() != null && note.isArchived() != t.archived()) {
 			note.setPinned(false);
-//			note.setDeleted(false); //not the use case in app (from trash to archive)
 			note.setArchived(t.archived());
-		} // change arch and unpin
+		}
+
+		// move to delete & unpin+unarch
 		if (t.deleted() != null && note.isDeleted() != t.deleted()) {
 			note.setDeleted(t.deleted());
 			if(t.deleted()) {note.setDateDeleted(LocalDateTime.now());}
 			else {note.setDateDeleted(null);}
 			note.setPinned(false);
 			note.setArchived(false);
-		} // move to delete & unpin+unarch
-
+		}
 		return note;
 	}
 

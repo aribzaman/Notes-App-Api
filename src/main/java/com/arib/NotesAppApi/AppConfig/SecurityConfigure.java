@@ -26,6 +26,7 @@ public class SecurityConfigure {
     private final JwtAuthenticationFilter filter;
 	private final UserDetailsService userDetailsService;
 	private final PasswordEncoder passwordEncoder;
+
 	private final String[] whitelist = {"/user/**","/error"};
 
     @Bean
@@ -34,7 +35,7 @@ public class SecurityConfigure {
         http.csrf(AbstractHttpConfigurer::disable)
         		.cors(Customizer.withDefaults())
         		.authorizeHttpRequests(auth->auth
-        				.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+//        				.requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
 						.requestMatchers(whitelist).permitAll()
         				.anyRequest().authenticated())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(point))
@@ -44,7 +45,6 @@ public class SecurityConfigure {
         return http.build();
     }
 
-//Database ke liye DAO Authentication provider
 @Bean
 public DaoAuthenticationProvider daoDauAuthenticationProvider()
 {

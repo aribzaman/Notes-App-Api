@@ -35,10 +35,11 @@ public class NotesController {
 
 	private final NotesService notesService;
 
+	//todo pagination
 	@GetMapping
 	public List<NotesDTO> getAllNotes() {
 		return notesService.getAllNotes();
-	} //Dev
+	}
 
 	@GetMapping("/section/{userId}")
 	public NotesResponse getNotes(@PathVariable @Min(value = 1) int userId, @RequestParam String section) {
